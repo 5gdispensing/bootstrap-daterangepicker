@@ -444,6 +444,13 @@
 			this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
 		}
 
+		// close popup when two calendars displaying and on second calendar date input was typed
+		if(!this.singleDatePicker && this.autoUpdateInput) {
+			this.container.find('.calendar.right .input-mini').on({
+				'keydown.daterangepicker': $.proxy(this.keydown, this)
+			});
+		}
+
 		//
 		// if attached to a text input, set the initial value
 		//
@@ -1334,7 +1341,7 @@
 
 				if (this.autoApply) {
 					this.calculateChosenLabel();
-					this.clickApply();
+					//this.clickApply();
 				}
 			}
 
