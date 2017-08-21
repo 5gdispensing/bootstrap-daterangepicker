@@ -52,6 +52,8 @@
 		this.autoUpdateInput = true;
 		this.alwaysShowCalendars = false;
 		this.ranges = {};
+		this.rightClicked = false;
+		this.leftClicked = false;
 
 		this.opens = 'right';
 		if (this.element.hasClass('pull-right'))
@@ -562,7 +564,7 @@
 
 		updateMonthsInView: function() {
 			//if both dates are visible already, do nothing
-			if (!this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month 
+			if (!this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month
 				&& (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM'))
 				&& (this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
 			) {
@@ -1309,6 +1311,13 @@
 			var isLeft = cal.hasClass('left');
 			var date = isLeft ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
+			if(isLeft) {
+				this.leftClicked = true;
+			}
+			if(!isLeft) {
+				this.rightClicked = true;
+			}
+
 			if (isLeft && date.isAfter(this.endDate)) {
 				//special case: clicking the same date for start/end,
 				//but the time of the start date is after the end date
@@ -1341,7 +1350,11 @@
 
 				if (this.autoApply) {
 					this.calculateChosenLabel();
-					//this.clickApply();
+					if(this.rightClicked && this.leftClicked){
+						this.rightClicked = false;
+						this.leftClicked = false;
+						this.clickApply();
+					}
 				}
 			}
 
