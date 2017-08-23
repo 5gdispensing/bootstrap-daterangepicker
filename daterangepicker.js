@@ -1169,6 +1169,7 @@
 				// ie modal dialog fix
 			e.type == "focusin" ||
 			target.closest(this.element).length ||
+			target.parent(this.element).length ||
 			target.closest(this.container).length ||
 			target.closest('.calendar-table').length
 			) return;
