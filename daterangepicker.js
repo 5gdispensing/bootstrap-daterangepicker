@@ -1167,12 +1167,13 @@
 			// itself then call this.hide()
 			if (
 				// ie modal dialog fix
-			e.type == "focusin" ||
-			target.closest(this.element).length ||
-			target.parent(this.element).length ||
-			target.closest(this.container).length ||
-			target.closest('.calendar-table').length
-			) return;
+				e.type == "focusin" ||
+				target.closest(this.element).length ||
+				target.hasClass('open-btn') ||
+				target.closest('.open-btn') ||
+				target.closest(this.container).length ||
+				target.closest('.calendar-table').length
+			) return e;
 			this.hide();
 			this.element.trigger('outsideClick.daterangepicker', this);
 		},
