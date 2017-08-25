@@ -1170,7 +1170,7 @@
 				e.type == "focusin" ||
 				target.closest(this.element).length ||
 				target.hasClass('open-btn') ||
-				target.closest('.open-btn') ||
+				target.closest('.open-btn').length ||
 				target.closest(this.container).length ||
 				target.closest('.calendar-table').length
 			) return e;
