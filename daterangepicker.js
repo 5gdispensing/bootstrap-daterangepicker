@@ -1323,40 +1323,41 @@
 			if (isLeft && date.isAfter(this.endDate)) {
 				//special case: clicking the same date for start/end,
 				//but the time of the start date is after the end date
-				this.setStartDate(this.endDate.startOf('day').clone());
+				this.setEndDate(date.endOf('day').clone());
 			} else if (!isLeft && date.isBefore(this.startDate)) {
 				//special case: clicking the same date for start/end,
 				//but the time of the end date is before the start date
-				this.setEndDate(this.startDate.endOf('day').clone());
-			} else { // picking general case
-				// store time selection
-				if (this.timePicker) {
-					var pickerClass = '.' + (isLeft ? 'left' : 'right');
-					var hour = parseInt(this.container.find(pickerClass + ' .hourselect').val(), 10);
-					if (!this.timePicker24Hour) {
-						var ampm = this.container.find(pickerClass + ' .ampmselect').val();
-						if (ampm === 'PM' && hour < 12)
-							hour += 12;
-						if (ampm === 'AM' && hour === 12)
-							hour = 0;
-					}
-					var minute = parseInt(this.container.find(pickerClass + ' .minuteselect').val(), 10);
-					var second = this.timePickerSeconds ? parseInt(this.container.find(pickerClass + ' .secondselect').val(), 10) : 0;
-					date = date.clone().hour(hour).minute(minute).second(second);
-				}
-				if (isLeft) {
-					this.setStartDate(date.clone());
-				} else {
-					this.setEndDate(date.clone());
-				}
+				this.setStartDate(date.startOf('day').clone());
+			}
 
-				if (this.autoApply) {
-					this.calculateChosenLabel();
-					if(this.rightClicked && this.leftClicked){
-						this.rightClicked = false;
-						this.leftClicked = false;
-						this.clickApply();
-					}
+			// picking general case
+			// store time selection
+			if (this.timePicker) {
+				var pickerClass = '.' + (isLeft ? 'left' : 'right');
+				var hour = parseInt(this.container.find(pickerClass + ' .hourselect').val(), 10);
+				if (!this.timePicker24Hour) {
+					var ampm = this.container.find(pickerClass + ' .ampmselect').val();
+					if (ampm === 'PM' && hour < 12)
+						hour += 12;
+					if (ampm === 'AM' && hour === 12)
+						hour = 0;
+				}
+				var minute = parseInt(this.container.find(pickerClass + ' .minuteselect').val(), 10);
+				var second = this.timePickerSeconds ? parseInt(this.container.find(pickerClass + ' .secondselect').val(), 10) : 0;
+				date = date.clone().hour(hour).minute(minute).second(second);
+			}
+			if (isLeft) {
+				this.setStartDate(date.clone());
+			} else {
+				this.setEndDate(date.clone());
+			}
+
+			if (this.autoApply) {
+				this.calculateChosenLabel();
+				if(this.rightClicked && this.leftClicked){
+					this.rightClicked = false;
+					this.leftClicked = false;
+					this.clickApply();
 				}
 			}
 
