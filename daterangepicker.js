@@ -1313,21 +1313,24 @@
 			var isLeft = cal.hasClass('left');
 			var date = isLeft ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
+			// catch date selection outside of allowed values, cancel this selection and mark selected date as erroneous
+			if (isLeft && date.isAfter(this.endDate) || !isLeft && date.isBefore(this.startDate)) {
+				console.log('this cell is wrong selected', this, e);
+				// clear previous errors
+				$('td.available.error').removeClass('error');
+				// set new erroneous cell
+				$(e.target).addClass('error');
+				return;
+			}else{
+				$('td.available.error').removeClass('error');
+				// clear error marking from all other cells, which were affected before
+			}
+
 			if(isLeft) {
 				this.leftClicked = true;
 			}
 			if(!isLeft) {
 				this.rightClicked = true;
-			}
-
-			if (isLeft && date.isAfter(this.endDate)) {
-				//special case: clicking the same date for start/end,
-				//but the time of the start date is after the end date
-				this.setEndDate(date.endOf('day').clone());
-			} else if (!isLeft && date.isBefore(this.startDate)) {
-				//special case: clicking the same date for start/end,
-				//but the time of the end date is before the start date
-				this.setStartDate(date.startOf('day').clone());
 			}
 
 			// picking general case

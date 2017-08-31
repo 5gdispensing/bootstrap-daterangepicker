@@ -115,6 +115,10 @@
     background-color: #357ebd;
     border-color: transparent;
     color: #fff; }
+  .daterangepicker td.error, .daterangepicker td.error:hover {
+	background-color: orange;
+	border-color: transparent;
+  }
   .daterangepicker th.month {
     width: auto; }
   .daterangepicker td.disabled, .daterangepicker option.disabled {
