@@ -119,6 +119,10 @@
 	background-color: orange;
 	border-color: transparent;
   }
+  .daterangepicker td .alert {
+	white-space: normal;
+    margin-bottom: 0;
+  }
   .daterangepicker th.month {
     width: auto; }
   .daterangepicker td.disabled, .daterangepicker option.disabled {

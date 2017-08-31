@@ -1320,6 +1320,12 @@
 				$('td.available.error').removeClass('error');
 				// set new erroneous cell
 				$(e.target).addClass('error');
+
+				// remove all previous alerts
+				$(e.target).closest('.daterangepicker.show-calendar').find('tr.valid-info').remove()
+				// add alerts under the calendar when it was not shown before
+				$(e.target).closest('tbody').append('<tr class="valid-info"><td colspan="7"><div class="alert alert-warning">End date cannot be earlier than begin date</div></td></tr>');
+
 				return;
 			}else{
 				$('td.available.error').removeClass('error');
