@@ -515,8 +515,8 @@
 			if (this.timePicker && this.timePickerIncrement)
 				this.endDate.minute(Math.round(this.endDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
 
-			if (this.endDate.isBefore(this.startDate))
-				this.endDate = this.startDate.clone();
+			// if (this.endDate.isBefore(this.startDate))
+			// 	this.endDate = this.startDate.clone();
 
 			if (this.maxDate && this.endDate.isAfter(this.maxDate))
 				this.endDate = this.maxDate.clone();
@@ -1161,18 +1161,23 @@
 			}
 		},
 
+		hasError: function() {
+			return $(this.container).hasClass('has-error');
+		},
+
 		outsideClick: function(e) {
 			var target = $(e.target);
 			// if the page is clicked anywhere except within the daterangerpicker/button
 			// itself then call this.hide()
 			if (
 				// ie modal dialog fix
-				e.type == "focusin" ||
-				target.closest(this.element).length ||
-				target.hasClass('open-btn') ||
-				target.closest('.open-btn').length ||
-				target.closest(this.container).length ||
-				target.closest('.calendar-table').length
+			e.type == "focusin" ||
+			target.closest(this.element).length ||
+			target.hasClass('open-btn') ||
+			target.closest('.open-btn').length ||
+			target.closest(this.container).length ||
+			target.closest('.calendar-table').length ||
+			this.hasError()
 			) return e;
 			this.hide();
 			this.element.trigger('outsideClick.daterangepicker', this);
@@ -1316,20 +1321,20 @@
 			// catch date selection outside of allowed values, cancel this selection and mark selected date as erroneous
 			if (isLeft && date.isAfter(this.endDate) || !isLeft && date.isBefore(this.startDate)) {
 				console.log('this cell is wrong selected', this, e);
-				// clear previous errors
-				$('td.available.error').removeClass('error');
+				// clear previous errors from the same calendar
+				$(e.target).closest('tbody').find('td.available.error').removeClass('error');
 				// set new erroneous cell
 				$(e.target).addClass('error');
-
+				// mark container as having error to prevent change applying
+				$(this.container).addClass('has-error')
 				// remove all previous alerts
 				$(e.target).closest('.daterangepicker.show-calendar').find('tr.valid-info').remove()
 				// add alerts under the calendar when it was not shown before
 				$(e.target).closest('tbody').append('<tr class="valid-info"><td colspan="7"><div class="alert alert-warning">End date cannot be earlier than begin date</div></td></tr>');
-
-				return;
 			}else{
+				// clear all error marks
 				$('td.available.error').removeClass('error');
-				// clear error marking from all other cells, which were affected before
+				$(this.container).removeClass('has-error')
 			}
 
 			if(isLeft) {
@@ -1376,7 +1381,9 @@
 					this.clickApply();
 			}
 
-			this.updateView();
+			if(!this.hasError()){
+				this.updateView();
+			}
 
 			//This is to cancel the blur event handler if the mouse was in one of the inputs
 			e.stopPropagation();
@@ -1414,8 +1421,10 @@
 		},
 
 		clickApply: function(e) {
-			this.hide();
-			this.element.trigger('apply.daterangepicker', this);
+			if(!this.hasError()){
+				this.hide();
+				this.element.trigger('apply.daterangepicker', this);
+			}
 		},
 
 		clickCancel: function(e) {
@@ -1534,6 +1543,8 @@
 					this.container.find('input[name="daterangepicker_end"]').val(this.endDate.format(this.locale.format));
 				}
 
+				// no ways to have error now
+				this.container.removeClass('has-error');
 			}
 
 			this.updateView();
@@ -1551,7 +1562,9 @@
 			} else {
 				this.setEndDate(this.endDate.clone());
 			}
-			this.updateView();
+			if(!this.hasError()){
+				this.updateView();
+			}
 		},
 
 		formInputsBlurred: function(e) {
