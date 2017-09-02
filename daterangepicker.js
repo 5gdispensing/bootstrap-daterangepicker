@@ -1213,6 +1213,9 @@
 		},
 
 		clickRange: function(e) {
+			// remove errors from calendar
+			$(this.container).removeClass('has-error')
+
 			var label = e.target.getAttribute('data-range-key');
 			this.chosenLabel = label;
 			if (label == this.locale.customRangeLabel) {
