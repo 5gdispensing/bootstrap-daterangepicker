@@ -882,9 +882,9 @@
 			var timeSelector = this.container.find('.calendar.' + side + ' .calendar-time div');
 			if (timeSelector.html() != '') {
 
-				selected.hour(timeSelector.find('.hourselect option:selected').val() || selected.hour());
-				selected.minute(timeSelector.find('.minuteselect option:selected').val() || selected.minute());
-				selected.second(timeSelector.find('.secondselect option:selected').val() || selected.second());
+				selected.hour(timeSelector.find(selected.hour() === 0 ? 0 : selected.hour() || '.hourselect option:selected').val());
+				selected.minute(timeSelector.find(selected.minute() === 0 ? 0 : selected.minute() || '.minuteselect option:selected').val());
+				selected.second(timeSelector.find(selected.second() === 0 ? 0 : selected.second() || '.secondselect option:selected').val());
 
 				if (!this.timePicker24Hour) {
 					var ampm = timeSelector.find('.ampmselect option:selected').val();
