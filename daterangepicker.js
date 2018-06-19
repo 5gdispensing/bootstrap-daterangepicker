@@ -560,6 +560,8 @@
                 if (this.leftCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM')) {
                     this.leftCalendar.month = this.startDate.clone().date(2);
                     this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
+                } else if (this.leftCalendar.month.format('YYYY-MM') > this.rightCalendar.month.format('YYYY-MM')) {
+	                this.rightCalendar.month = this.leftCalendar.month;
                 }
             }
             if (this.maxDate && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) {
@@ -1250,7 +1252,8 @@
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.drp-calendar');
-            var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
+	        var isLeft = cal.hasClass('left');
+            var date = isLeft ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
             //
             // this function needs to do a few things:
@@ -1276,6 +1279,10 @@
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
                 this.endDate = null;
+                // when start date is setting on right side - set left calendar to at least same month
+                if(!isLeft && this.leftCalendar.month.format('YYYY-MM') < this.rightCalendar.month.format('YYYY-MM')){
+	                this.leftCalendar.month = this.rightCalendar.month.clone();
+                }
                 this.setStartDate(date.clone());
             } else if (!this.endDate && date.isBefore(this.startDate)) {
                 //special case: clicking the same date for start/end,
