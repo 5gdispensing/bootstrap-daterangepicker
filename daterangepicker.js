@@ -476,7 +476,7 @@
 					this.startDate.minute(Math.floor(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
 			}
 
-			this.updateElement();
+			this.updateElement(this.isShowing);
 
 			this.updateMonthsInView();
 		},
@@ -507,7 +507,7 @@
 
 			this.container.find('.drp-selected').html(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
 
-			this.updateElement();
+			this.updateElement(this.isShowing);
 
 			this.updateMonthsInView();
 		},
@@ -1483,14 +1483,19 @@
 			}
 		},
 
-		updateElement: function() {
+		updateElement: function(skipTrigger) {
 			if (this.element.is('input') && this.autoUpdateInput) {
 				var newValue = this.startDate.format(this.locale.format);
 				if (!this.singleDatePicker) {
 					newValue += this.locale.separator + this.endDate.format(this.locale.format);
 				}
 				if (newValue !== this.element.val()) {
-					this.element.val(newValue).trigger('change');
+					// change range label
+					this.element.val(newValue);
+					// don't initiate value handlers logic when need to change range label only
+					if(!skipTrigger){
+						this.element.trigger('change');
+					}
 				}
 			}
 		},
