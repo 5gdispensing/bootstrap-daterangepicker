@@ -1261,11 +1261,13 @@
 			if (isLeft && date.isAfter(this.endDate)) {
 				//special case: clicking the same date for start/end,
 				//but the time of the start date is after the end date
-				this.setStartDate(this.endDate.startOf('day').clone());
+				this.setStartDate(date.clone().startOf('day'));
+				this.setEndDate(date.clone().endOf('day'));
 			} else if (!isLeft && date.isBefore(this.startDate)) {
 				//special case: clicking the same date for start/end,
 				//but the time of the end date is before the start date
-				this.setEndDate(this.startDate.clone());
+				this.setStartDate(date.clone().startOf('day'));
+				this.setEndDate(date.clone().endOf('day'))
 			} else { // picking general case
 				if (this.timePicker) {
 					var pickerClass = '.' + (isLeft ? 'left' : 'right');
