@@ -476,8 +476,7 @@
 					this.startDate.minute(Math.floor(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
 			}
 
-			if (!this.isShowing)
-				this.updateElement();
+			this.updateElement();
 
 			this.updateMonthsInView();
 		},
@@ -508,8 +507,7 @@
 
 			this.container.find('.drp-selected').html(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
 
-			if (!this.isShowing)
-				this.updateElement();
+			this.updateElement();
 
 			this.updateMonthsInView();
 		},
