@@ -851,24 +851,28 @@
 			} else if (side == 'right') {
 				selected = this.endDate.clone();
 				minDate = this.startDate;
-			}
 
-			//Preserve the time already selected
-			var timeSelector = this.container.find('.drp-calendar.' + side + ' .calendar-time');
-			if (timeSelector.html() != '') {
+				var timeSelector = this.container.find('.drp-calendar.right .calendar-time');
+				if (timeSelector.html() != '') {
+					// set cloned endDate to the chosen values of <select> elements
+					selected.hour(timeSelector.find('.hourselect option:selected').val());
+					selected.minute(timeSelector.find('.minuteselect option:selected').val());
+					selected.second(timeSelector.find('.secondselect option:selected').val());
 
-				selected.hour(selected.hour() || timeSelector.find('.hourselect option:selected').val());
-				selected.minute(selected.minute() || timeSelector.find('.minuteselect option:selected').val());
-				selected.second(selected.second() || timeSelector.find('.secondselect option:selected').val());
+					// convert hour as needed
+					if (!this.timePicker24Hour) {
+						var ampm = timeSelector.find('.ampmselect option:selected').val();
+						if (ampm === 'PM' && selected.hour() < 12)
+							selected.hour(selected.hour() + 12);
+						if (ampm === 'AM' && selected.hour() === 12)
+							selected.hour(0);
+					}
 
-				if (!this.timePicker24Hour) {
-					var ampm = timeSelector.find('.ampmselect option:selected').val();
-					if (ampm === 'PM' && selected.hour() < 12)
-						selected.hour(selected.hour() + 12);
-					if (ampm === 'AM' && selected.hour() === 12)
-						selected.hour(0);
+					// selection actually needs to be applied to the control
+					this.endDate.hour(selected.hour());
+					this.endDate.minute(selected.minute());
+					this.endDate.second(selected.second());
 				}
-
 			}
 
 			if (side === 'right' && selected.isBefore(this.startDate)) {
