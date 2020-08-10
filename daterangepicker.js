@@ -1273,7 +1273,7 @@
 			} else { // picking general case
 				if (this.timePicker) {
 					var pickerClass = '.' + (isLeft ? 'left' : 'right');
-					var hour = parseInt(this.container.find('.right .hourselect').val(), 10);
+					var hour = parseInt(this.container.find(pickerClass + ' .hourselect').val(), 10);
 					if (!this.timePicker24Hour) {
 						var ampm = this.container.find(pickerClass + ' .ampmselect').val();
 						if (ampm === 'PM' && hour < 12)
